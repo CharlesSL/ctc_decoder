@@ -40,7 +40,7 @@
 #include "path_trie.h"
 
 using FSTMATCH = fst::SortedMatcher<fst::StdVectorFst>;
-std::vector<std::pair<double, std::vector<int>>> ctc_beam_search_decoder(
+std::vector<std::pair<double, std::vector<std::pair<int,int>>>> ctc_beam_search_decoder(
     const std::vector<std::vector<double>> &log_probs_seq,
     const std::vector<std::vector<int>> &log_probs_idx, PathTrie &root,
     const bool start, size_t beam_size, int blank_id, int space_id,
@@ -106,7 +106,7 @@ std::vector<std::pair<double, std::vector<int>>> ctc_beam_search_decoder(
               prefix->log_prob_nb_cur, log_prob_c + prefix->log_prob_nb_prev);
         }
         // get new prefix
-        auto prefix_new = prefix->get_path_trie(c);
+        auto prefix_new = prefix->get_path_trie(c, time_step);
         if (prefix_new != nullptr) {
           float log_p = -NUM_FLT_INF;
 
@@ -197,7 +197,7 @@ std::vector<std::string> map_batch(
   return batch_results;
 }
 
-std::vector<std::vector<std::pair<double, std::vector<int>>>>
+std::vector<std::vector<std::pair<double, std::vector<std::pair<int,int>>>>>
 ctc_beam_search_decoder_batch(
     const std::vector<std::vector<std::vector<double>>> &batch_log_probs_seq,
     const std::vector<std::vector<std::vector<int>>> &batch_log_probs_idx,
@@ -212,7 +212,7 @@ ctc_beam_search_decoder_batch(
 
   // enqueue the tasks of decoding
 
-  std::vector<std::future<std::vector<std::pair<double, std::vector<int>>>>>
+  std::vector<std::future<std::vector<std::pair<double, std::vector<std::pair<int,int>>>>>>
       res;
 
   for (size_t i = 0; i < batch_size; ++i) {
@@ -224,7 +224,7 @@ ctc_beam_search_decoder_batch(
   }
 
   // get decoding results
-  std::vector<std::vector<std::pair<double, std::vector<int>>>> batch_results;
+  std::vector<std::vector<std::pair<double, std::vector<std::pair<int,int>>>>> batch_results;
   for (size_t i = 0; i < batch_size; ++i) {
     batch_results.emplace_back(res[i].get());
   }

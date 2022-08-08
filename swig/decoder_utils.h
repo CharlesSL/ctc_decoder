@@ -71,7 +71,7 @@ std::vector<std::pair<double, std::string>> get_beam_search_result(
     const std::vector<PathTrie *> &prefixes,
     const std::vector<std::string> &vocabulary, size_t beam_size);
 
-std::vector<std::pair<double, std::vector<int>>> get_beam_search_result(
+std::vector<std::pair<double, std::vector<std::pair<int,int>>>> get_beam_search_result(
     const std::vector<PathTrie *> &prefixes, size_t beam_size);
 
 // Functor for prefix comparsion

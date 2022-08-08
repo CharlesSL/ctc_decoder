@@ -1,0 +1,9 @@
+swig/openfst-1.6.3
+swig/kenlm
+swig/ThreadPool
+.vscode
+build
+dist
+*.egg-info
+swig_*.py
+*_wrap.cxx

@@ -57,7 +57,7 @@
  *     A vector that each element is a pair of score  and decoding result,
  *     in desending order.
 */
-std::vector<std::pair<double, std::vector<int>>> ctc_beam_search_decoder(
+std::vector<std::pair<double, std::vector<std::pair<int,int>>>> ctc_beam_search_decoder(
     const std::vector<std::vector<double>> &log_probs_seq,
     const std::vector<std::vector<int>> &log_probs_idx, PathTrie &root,
     const bool start, size_t beam_size, int blank_id = 0, int space_id = -1,
@@ -88,7 +88,7 @@ std::vector<std::pair<double, std::vector<int>>> ctc_beam_search_decoder(
  *     A 2-D vector that each element is a vector of beam search decoding
  *     result for one audio sample.
 */
-std::vector<std::vector<std::pair<double, std::vector<int>>>>
+std::vector<std::vector<std::pair<double, std::vector<std::pair<int,int>>>>>
 ctc_beam_search_decoder_batch(
     const std::vector<std::vector<std::vector<double>>> &batch_log_probs_seq,
     const std::vector<std::vector<std::vector<int>>> &batch_log_probs_idx,

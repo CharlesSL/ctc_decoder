@@ -179,7 +179,7 @@ std::vector<std::string> Scorer::make_ngram(PathTrie* prefix) {
   PathTrie* new_node = nullptr;
 
   for (int order = 0; order < max_order_; order++) {
-    std::vector<int> prefix_vec;
+    std::vector<std::pair<int,int>> prefix_vec;
 
     if (is_character_based_) {
       new_node = current_node->get_path_vec(prefix_vec, SPACE_ID_, 1);
@@ -190,7 +190,11 @@ std::vector<std::string> Scorer::make_ngram(PathTrie* prefix) {
     }
 
     // reconstruct word
-    std::string word = vec2str(prefix_vec);
+    std::vector<int> labels;
+    for (auto i : prefix_vec){
+      labels.emplace_back(i.first);
+    }
+    std::string word = vec2str(labels);
     ngram.push_back(word);
 
     if (new_node->character == -1) {

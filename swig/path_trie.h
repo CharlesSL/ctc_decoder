@@ -32,13 +32,13 @@ class PathTrie {
   ~PathTrie();
 
   // get new prefix after appending new char
-  PathTrie* get_path_trie(int new_char, bool reset = true);
+  PathTrie* get_path_trie(int new_char, int time_step, bool reset = true);
 
   // get the prefix in index from root to current node
-  PathTrie* get_path_vec(std::vector<int>& output);
+  PathTrie* get_path_vec(std::vector<std::pair<int,int>>& output);
 
   // get the prefix in index from some stop node to current nodel
-  PathTrie* get_path_vec(std::vector<int>& output, int stop,
+  PathTrie* get_path_vec(std::vector<std::pair<int,int>>& output, int stop,
                          size_t max_steps = std::numeric_limits<size_t>::max());
 
   // update log probs
@@ -62,6 +62,7 @@ class PathTrie {
   float log_prob_nb_cur;
   float score;
   float approx_ctc;
+  int time_step;
   int character;
   PathTrie* parent;
 
